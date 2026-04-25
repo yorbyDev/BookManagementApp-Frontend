@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import ProtectedRoute from './context/ProtectedRoute';
 import Layout from './components/Layout';
+import Books from './pages/Books';
 
 // Componente temporal para probar que la redirección funciona
 const Dashboard = () => (
@@ -22,7 +23,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* Aquí irán las futuras rutas como /libros */}
+            <Route path="/books" element={<Books />} />
           </Route>
         </Route>
 

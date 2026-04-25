@@ -26,8 +26,16 @@ Se completó la integración con el endpoint de seguridad del backend. El sistem
 
 ## Navegación y Seguridad (React Router):
 
-Rutas Protegidas: Se implementó un componente de orden superior (Higher-Order Component) que actúa como middleware para validar la sesión antes de renderizar vistas privadas.
+## Rutas Protegidas: Se implementó un componente de orden superior (Higher-Order Component) que actúa como middleware para validar la sesión antes de renderizar vistas privadas.
 
-Layout Modular: Uso de rutas anidadas y el componente <Outlet /> para mantener una interfaz consistente (Navbar, Sidebar) sin recargar componentes comunes.
+## Layout Modular: Uso de rutas anidadas y el componente <Outlet /> para mantener una interfaz consistente (Navbar, Sidebar) sin recargar componentes comunes.
 
-Gestión de Sesión: Implementación de flujo completo de Login/Logout con redireccionamiento programático mediante el hook useNavigate.
+## Gestión de Sesión: Implementación de flujo completo de Login/Logout con redireccionamiento programático mediante el hook useNavigate.
+
+## Gestión de Datos (Catálogo de Libros):
+
+## Capa de Servicios: Implementación de bookService.js para centralizar las peticiones HTTP relativas al inventario, manteniendo el desacoplamiento con la UI.
+
+## Renderizado Dinámico: Uso del método .map() para la generación de interfaces basadas en datos, asegurando la correspondencia entre los modelos de Pydantic (Backend) y los estados de React (Frontend).
+
+## Diseño Responsivo: Implementación de una cuadrícula (Grid) adaptable con Tailwind CSS v4, incluyendo estados de hover y feedback visual avanzado.
