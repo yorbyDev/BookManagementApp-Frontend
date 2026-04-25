@@ -1,11 +1,13 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { login as loginService } from '../api/authService'; // Lo crearemos en el siguiente paso
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate(); // Inicializar
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,11 +17,12 @@ const Login = () => {
       
       // 2. Usamos la función global del contexto para guardar el token
       login(data.access_token);
-      
-      alert('¡Bienvenido al Sistema de Biblioteca!');
+      navigate('/dashboard'); // Redirigir tras éxito
+
     } catch (error) {
       alert('Error: Credenciales inválidas');
     }
+
   };
 
   return (

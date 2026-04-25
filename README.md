@@ -23,3 +23,11 @@ Se ha implementado un Proveedor de Autenticación utilizando la Context API de R
 
 ## Autenticación (Login):
 Se completó la integración con el endpoint de seguridad del backend. El sistema procesa correctamente el formato x-www-form-urlencoded, valida credenciales y persiste el token de acceso en el cliente.
+
+## Navegación y Seguridad (React Router):
+
+Rutas Protegidas: Se implementó un componente de orden superior (Higher-Order Component) que actúa como middleware para validar la sesión antes de renderizar vistas privadas.
+
+Layout Modular: Uso de rutas anidadas y el componente <Outlet /> para mantener una interfaz consistente (Navbar, Sidebar) sin recargar componentes comunes.
+
+Gestión de Sesión: Implementación de flujo completo de Login/Logout con redireccionamiento programático mediante el hook useNavigate.
