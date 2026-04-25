@@ -1,3 +1,9 @@
+/**
+ * @function login
+ * @param {string} token - JWT generado por FastAPI.
+ * @param {Object} userData - Información del usuario (username, es_admin).
+ */
+
 import { createContext, useState, useEffect } from 'react';
 import api from '../api/axios';
 

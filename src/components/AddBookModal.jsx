@@ -1,3 +1,8 @@
+/**
+ * @function handleSearchISBN
+ * @description Consulta el endpoint de búsqueda por ISBN para autocompletar el formulario.
+ */
+
 import { useState } from 'react';
 import api from '../api/axios';
 import { createBook } from '../api/bookService';
