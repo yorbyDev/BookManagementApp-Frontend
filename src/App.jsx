@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import ProtectedRoute from './context/ProtectedRoute';
 import Layout from './components/Layout';
 import Books from './pages/Books';
+import Register from './pages/Register';
 
 // Componente temporal para probar que la redirección funciona
 const Dashboard = () => (
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         {/* Ruta Pública */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Rutas Protegidas (Solo accesibles con Token) */}
         <Route element={<ProtectedRoute />}>
