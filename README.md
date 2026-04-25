@@ -20,3 +20,6 @@ Se implementó un cliente centralizado con Axios que gestiona la persistencia de
 
 ## Gestión de Estado Global (AuthContext):
 Se ha implementado un Proveedor de Autenticación utilizando la Context API de React. Este módulo centraliza el estado de la sesión, gestiona la persistencia del JWT en el localStorage y provee métodos globales de login y logout para asegurar el desacoplamiento entre la lógica de sesión y los componentes visuales.
+
+## Autenticación (Login):
+Se completó la integración con el endpoint de seguridad del backend. El sistema procesa correctamente el formato x-www-form-urlencoded, valida credenciales y persiste el token de acceso en el cliente.
