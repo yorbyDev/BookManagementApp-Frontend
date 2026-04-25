@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { getBooks } from '../api/bookService';
+import { requestLoan } from '../api/loanService';
 import { AuthContext } from '../context/AuthContext';
 import AddBookModal from '../components/AddBookModal';
 
@@ -16,8 +17,29 @@ const Books = () => {
       const data = await getBooks();
       setBooks(data);
     } catch (error) {
+      console.error("Error al cargar libros:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 2. Nueva función para manejar el préstamo
+  const handleLoan = async (libroId) => {
+    try {
+      const data = await requestLoan(libroId);
+      
+      // Mostramos la información de retorno de tu API de FastAPI
+      alert(
+        `¡Préstamo realizado con éxito!\n\n` +
+        `🗓️ Devolver el: ${data.devolver_en}\n` +
+        `🆔 ID Préstamo: ${data.id}`
+      );
+      
+      // Refrescamos la lista para ver el cambio de estado a "Prestado"
+      fetchBooks(); 
+    } catch (error) {
+      console.error("Error al solicitar préstamo:", error);
+      alert("No se pudo procesar el préstamo. Verifica si el libro sigue disponible.");
     }
   };
 
@@ -36,7 +58,6 @@ const Books = () => {
           <p className="text-slate-500 mt-1">Gestiona los títulos de la biblioteca.</p>
         </div>
 
-        {/* BOTÓN CONDICIONAL PARA ADMIN */}
         {user?.es_admin && (
           <button 
             onClick={() => setShowModal(true)}
@@ -68,29 +89,39 @@ const Books = () => {
                 por <span className="font-medium text-slate-700">{book.autor}</span>
               </p>
 
-              <p className="text-slate-400 text-xs flex items-center gap-1 italic">
+              <p className="text-slate-400 text-xs flex items-center gap-1 italic mt-1">
                 <span className="not-italic">🏢</span> {book.editorial || 'Editorial no registrada'}
               </p>
               
               <div className="mt-6 flex items-center justify-between">
+                {/* 3. Limpiamos las etiquetas duplicadas: Usamos book.disponible */}
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   book.disponible 
                   ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' 
                   : 'bg-amber-50 text-amber-700 border border-amber-100'
                 }`}>
-                  {book.disponible ? '● Disponible' : '○ En préstamo'}
+                  {book.disponible ? '● Disponible' : '○ Prestado'}
                 </span>
                 
-                <button className="text-sm font-semibold text-blue-600 hover:text-blue-800">
-                  Gestionar →
-                </button>
+                {/* 4. Lógica de botones condicionada a la disponibilidad */}
+                {book.disponible ? (
+                  <button 
+                    onClick={() => handleLoan(book.id)}
+                    className="text-sm font-bold text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors border border-transparent hover:border-blue-100"
+                  >
+                    Solicitar Préstamo →
+                  </button>
+                ) : (
+                  <span className="text-xs text-slate-400 font-medium italic">
+                    No disponible
+                  </span>
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* COMPONENTE MODAL */}
       <AddBookModal 
         isOpen={showModal} 
         onClose={() => setShowModal(false)} 
