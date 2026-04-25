@@ -12,3 +12,11 @@ Se utiliza una estructura modular desacoplada:
 - `/src/api`: Servicios de conexión.
 - `/src/context`: Estado global de autenticación (JWT).
 - `/src/pages`: Vistas de usuario y administrador.
+
+## Módulo de Comunicación (API):
+Se implementó un cliente centralizado con Axios que gestiona la persistencia de la sesión mediante interceptores, inyectando el JWT en las cabeceras de autorización de forma transparente para los componentes.
+
+## El proyecto utiliza variables de entorno para la configuración de la API.
+
+## Gestión de Estado Global (AuthContext):
+Se ha implementado un Proveedor de Autenticación utilizando la Context API de React. Este módulo centraliza el estado de la sesión, gestiona la persistencia del JWT en el localStorage y provee métodos globales de login y logout para asegurar el desacoplamiento entre la lógica de sesión y los componentes visuales.
