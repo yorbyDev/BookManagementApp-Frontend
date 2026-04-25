@@ -1,21 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getBooks } from '../api/bookService';
+import { AuthContext } from '../context/AuthContext';
+import AddBookModal from '../components/AddBookModal';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  
+  const { user } = useContext(AuthContext);
+
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const data = await getBooks();
+      setBooks(data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const data = await getBooks();
-        setBooks(data);
-      } catch (error) {
-        console.error("Error cargando libros:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchBooks();
   }, []);
 
@@ -23,24 +29,30 @@ const Books = () => {
 
   return (
     <div className="space-y-8">
-      {/* SECCIÓN DE CABECERA */}
+      {/* CABECERA */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Catálogo de Libros</h1>
-          <p className="text-slate-500 mt-1">Gestiona los títulos y préstamos de la biblioteca.</p>
+          <p className="text-slate-500 mt-1">Gestiona los títulos de la biblioteca.</p>
         </div>
-        <button className="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95">
-          + Añadir Libro
-        </button>
+
+        {/* BOTÓN CONDICIONAL PARA ADMIN */}
+        {user?.es_admin && (
+          <button 
+            onClick={() => setShowModal(true)}
+            className="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
+          >
+            + Registrar Libro
+          </button>
+        )}
       </div>
 
-      {/* MANEJO DE LISTA VACÍA */}
+      {/* GRID DE LIBROS */}
       {books.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-300">
-           <p className="text-slate-500 text-lg">No hay libros disponibles en este momento.</p>
+           <p className="text-slate-500 text-lg">No hay libros disponibles.</p>
         </div>
       ) : (
-        /* AQUÍ ES DONDE VA EL CÓDIGO DE MAPEO */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {books.map((book) => (
             <div 
@@ -50,10 +62,14 @@ const Books = () => {
               <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 to-cyan-400 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
               <h3 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                {book.titulo} {/* Asegúrate que coincida con tu backend (ej. book.titulo) */}
+                {book.titulo}
               </h3>
               <p className="text-slate-500 text-sm mt-1">
                 por <span className="font-medium text-slate-700">{book.autor}</span>
+              </p>
+
+              <p className="text-slate-400 text-xs flex items-center gap-1 italic">
+                <span className="not-italic">🏢</span> {book.editorial || 'Editorial no registrada'}
               </p>
               
               <div className="mt-6 flex items-center justify-between">
@@ -73,6 +89,13 @@ const Books = () => {
           ))}
         </div>
       )}
+
+      {/* COMPONENTE MODAL */}
+      <AddBookModal 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)} 
+        onRefresh={fetchBooks} 
+      />
     </div>
   );
 };

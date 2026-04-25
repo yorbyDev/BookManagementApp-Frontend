@@ -15,13 +15,16 @@ const Login = () => {
       // 1. Llamamos al servicio que habla con FastAPI
       const data = await loginService(username, password);
       
-      // 2. Usamos la función global del contexto para guardar el token
-      login(data.access_token);
-      navigate('/dashboard'); // Redirigir tras éxito
+      if (data.access_token && data.user) {
+        login(data.access_token, data.user); 
+        navigate('/dashboard');
+      } else {
+        alert("Error: La respuesta del servidor es incompleta.");
+      }
 
-    } catch (error) {
-      alert('Error: Credenciales inválidas');
-    }
+      } catch (error) {
+        alert('Error: Credenciales inválidas');
+      }
 
   };
 

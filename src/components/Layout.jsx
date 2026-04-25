@@ -3,7 +3,8 @@ import { AuthContext } from '../context/AuthContext';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 
 const Layout = () => {
-  const { logout } = useContext(AuthContext);
+  // CORRECCIÓN: Añadimos 'user' aquí para que esté disponible en el componente
+  const { user, logout } = useContext(AuthContext); 
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -25,6 +26,12 @@ const Layout = () => {
         <div className="flex items-center gap-6">
           <Link to="/dashboard" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Inicio</Link>
           <Link to="/books" className="text-slate-600 hover:text-blue-600 font-medium">Libros</Link>
+          
+          <span className="text-sm font-medium text-slate-500">
+            {/* El uso de user?. evita que la app truene si por un segundo el usuario es null */}
+            Hola, <span className="text-slate-800 font-bold">{user?.username || 'Usuario'}</span>
+          </span>
+          
           <button 
             onClick={handleLogout}
             className="px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-all"

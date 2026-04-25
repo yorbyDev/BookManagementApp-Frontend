@@ -39,3 +39,8 @@ Se completó la integración con el endpoint de seguridad del backend. El sistem
 ## Renderizado Dinámico: Uso del método .map() para la generación de interfaces basadas en datos, asegurando la correspondencia entre los modelos de Pydantic (Backend) y los estados de React (Frontend).
 
 ## Diseño Responsivo: Implementación de una cuadrícula (Grid) adaptable con Tailwind CSS v4, incluyendo estados de hover y feedback visual avanzado.
+
+### 🚀 Funcionalidades Recientes
+- **Control de Acceso (RBAC):** Implementación de roles (`es_admin`) para proteger rutas y componentes críticos en el frontend.
+- **Registro Automatizado (ISBN):** Integración con la API de Open Library a través de un proxy en el backend para el autocompletado de datos de libros (Título, Autor, Editorial).
+- **Gestión de Estado Global:** Uso de React Context API para persistencia de sesión y manejo de tokens JWT.

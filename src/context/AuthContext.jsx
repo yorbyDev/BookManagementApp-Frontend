@@ -1,26 +1,27 @@
 import { createContext, useState, useEffect } from 'react';
 import api from '../api/axios';
 
-// 1. Creamos el contexto vacío
 export const AuthContext = createContext();
 
-// 2. Creamos el Proveedor (Provider)
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // 1. Inicializamos los estados leyendo el localStorage
+  // Esto evita que el usuario se desloguee al presionar F5
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Al cargar la app, verificamos si hay un token guardado
     const checkUser = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+
+      if (storedToken && storedUser) {
         try {
-          // Opcional: Llamada a tu endpoint /users/me para validar token
-          // const res = await api.get('/users/me');
-          // setUser(res.data);
-          setUser({ loggedIn: true }); // Por ahora marcamos como logueado
+          // Aquí podrías validar el token con tu backend si quisieras
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
         } catch (error) {
-          localStorage.removeItem('token');
+          logout(); // Si hay error, limpiamos todo
         }
       }
       setLoading(false);
@@ -28,18 +29,32 @@ export const AuthProvider = ({ children }) => {
     checkUser();
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setUser({ loggedIn: true });
+  // 2. Función de Login corregida
+  const login = (newToken, userData) => {
+    try {
+      // Seteamos los estados de React
+      setToken(newToken);
+      setUser(userData);
+
+      // Guardamos en el almacenamiento local
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(userData));
+
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
+    // 3. Pasamos 'token' en el value por si lo necesitas en otros componentes
+    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
