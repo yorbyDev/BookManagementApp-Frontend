@@ -9,7 +9,7 @@ const BookCard = ({ book, onLoan }) => {
       <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 to-cyan-400 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
       
       {/* Contenedor de la Portada */}
-      <div className="mb-4 overflow-hidden rounded-xl bg-slate-50 aspect-[3/4] flex items-center justify-center border border-slate-100 shadow-inner">
+      <div className="mb-4 overflow-hidden rounded-xl bg-slate-50 aspect-8/9 flex items-center justify-center border border-slate-100 shadow-inner">
         <img 
           src={coverUrl} 
           alt={`Portada de ${book.titulo}`}
